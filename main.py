@@ -8,9 +8,24 @@ from pathlib import Path
 import mimetypes
 import logging
 import metadata_extractor
+import time
 
 
 logger = logging.getLogger(__name__)
+
+
+def sort_by_date(dir: Path, files: list, reverse = False):
+    date_by_file = {}
+
+    for file in files:
+        fp = Path(dir, file)
+
+        cdate = os.path.getctime(fp) * 10000000
+        date_by_file[file] = cdate
+
+        date_by_file = dict(sorted(date_by_file.items(), key=lambda item: item[1], reverse=reverse))
+    
+    return list(date_by_file.keys())
 
 
 async def main():
@@ -21,10 +36,12 @@ async def main():
         print("------------------------------")
         playlist_path = input("Path to playlist: ").replace("\"", "").replace("\'", "")
         print("------------------------------")
-        listdir = os.listdir(playlist_path)
 
-        for file in listdir:
-            i = listdir.index(file)
+        listdir = os.listdir(playlist_path)
+        sorted_listdir = sort_by_date(Path(playlist_path), listdir)
+
+        for file in sorted_listdir:
+            i = sorted_listdir.index(file)
             
             mime_type = mimetypes.guess_type(file)
             path_to_file = Path(playlist_path, file)
