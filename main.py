@@ -19,7 +19,7 @@ async def main():
     async with app:
         print()
         print("------------------------------")
-        playlist_path = input("Path to playlist: ")
+        playlist_path = input("Path to playlist: ").replace("\"", "").replace("\'", "")
         print("------------------------------")
         listdir = os.listdir(playlist_path)
 
