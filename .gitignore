@@ -3,6 +3,8 @@ __pycache__/
 dist/
 build/
 main.spec
+cache/
 
-*.session
+*.session*
 *.env
+latestlog.txt
